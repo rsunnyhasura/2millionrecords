@@ -66,6 +66,15 @@ definition:
           - upgradeDate
           - upgradeType
           - userId
+    - role: family-member
+      output:
+        allowedFields:
+          - id
+          - newDeviceId
+          - oldDeviceId
+          - upgradeDate
+          - upgradeType
+          - userId
 
 ---
 kind: BooleanExpressionType
@@ -193,6 +202,10 @@ definition:
         filter: null
         allowSubscriptions: true
     - role: family-admin
+      select:
+        filter: null
+        allowSubscriptions: true
+    - role: family-member
       select:
         filter: null
         allowSubscriptions: true

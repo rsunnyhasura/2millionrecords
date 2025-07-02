@@ -52,6 +52,13 @@ definition:
           - id
           - promotionId
           - userId
+    - role: family-member
+      output:
+        allowedFields:
+          - appliedOn
+          - id
+          - promotionId
+          - userId
 
 ---
 kind: BooleanExpressionType
@@ -165,6 +172,10 @@ definition:
         filter: null
         allowSubscriptions: true
     - role: family-admin
+      select:
+        filter: null
+        allowSubscriptions: true
+    - role: family-member
       select:
         filter: null
         allowSubscriptions: true

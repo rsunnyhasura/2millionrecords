@@ -66,6 +66,15 @@ definition:
           - planId
           - startDate
           - userId
+    - role: family-member
+      output:
+        allowedFields:
+          - endDate
+          - id
+          - isActive
+          - planId
+          - startDate
+          - userId
 
 ---
 kind: BooleanExpressionType
@@ -191,6 +200,10 @@ definition:
         filter: null
         allowSubscriptions: true
     - role: family-admin
+      select:
+        filter: null
+        allowSubscriptions: true
+    - role: family-member
       select:
         filter: null
         allowSubscriptions: true

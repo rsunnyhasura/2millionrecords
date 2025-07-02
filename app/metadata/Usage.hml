@@ -73,6 +73,16 @@ definition:
           - usagePeriodEnd
           - usagePeriodStart
           - userId
+    - role: family-member
+      output:
+        allowedFields:
+          - callMinutesUsed
+          - dataUsedGb
+          - id
+          - smsUsed
+          - usagePeriodEnd
+          - usagePeriodStart
+          - userId
 
 ---
 kind: BooleanExpressionType
@@ -202,6 +212,10 @@ definition:
         filter: null
         allowSubscriptions: true
     - role: family-admin
+      select:
+        filter: null
+        allowSubscriptions: true
+    - role: family-member
       select:
         filter: null
         allowSubscriptions: true
