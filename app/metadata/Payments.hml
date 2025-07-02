@@ -1,0 +1,226 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: Payments
+  fields:
+    - name: amount
+      type: Bigdecimal
+    - name: id
+      type: Uuid!
+    - name: method
+      type: String_1
+    - name: paymentDate
+      type: Date
+    - name: status
+      type: String_1
+    - name: userId
+      type: Uuid
+  graphql:
+    typeName: Payments
+    inputTypeName: PaymentsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: payments
+      fieldMapping:
+        amount:
+          column:
+            name: amount
+        id:
+          column:
+            name: id
+        method:
+          column:
+            name: method
+        paymentDate:
+          column:
+            name: payment_date
+        status:
+          column:
+            name: status
+        userId:
+          column:
+            name: user_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: Payments
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amount
+          - id
+          - method
+          - paymentDate
+          - status
+          - userId
+    - role: family-admin
+      output:
+        allowedFields:
+          - amount
+          - id
+          - method
+          - paymentDate
+          - status
+          - userId
+    - role: family-member
+      output:
+        allowedFields:
+          - amount
+          - id
+          - method
+          - paymentDate
+          - status
+          - userId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: PaymentsBoolExp
+  operand:
+    object:
+      type: Payments
+      comparableFields:
+        - fieldName: amount
+          booleanExpressionType: NumericBoolExp
+        - fieldName: id
+          booleanExpressionType: UuidBoolExp
+        - fieldName: method
+          booleanExpressionType: TextBoolExp
+        - fieldName: paymentDate
+          booleanExpressionType: DateBoolExp
+        - fieldName: status
+          booleanExpressionType: TextBoolExp
+        - fieldName: userId
+          booleanExpressionType: UuidBoolExp
+      comparableRelationships:
+        - relationshipName: user
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: PaymentsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: PaymentsAggExp
+  operand:
+    object:
+      aggregatedType: Payments
+      aggregatableFields:
+        - fieldName: amount
+          aggregateExpression: NumericAggExp
+        - fieldName: id
+          aggregateExpression: UuidAggExp
+        - fieldName: method
+          aggregateExpression: TextAggExp
+        - fieldName: paymentDate
+          aggregateExpression: DateAggExp
+        - fieldName: status
+          aggregateExpression: TextAggExp
+        - fieldName: userId
+          aggregateExpression: UuidAggExp
+  count:
+    enable: true
+  graphql:
+    selectTypeName: PaymentsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: PaymentsOrderByExp
+  operand:
+    object:
+      orderedType: Payments
+      orderableFields:
+        - fieldName: amount
+          orderByExpression: BigdecimalOrderByExp
+        - fieldName: id
+          orderByExpression: UuidOrderByExp
+        - fieldName: method
+          orderByExpression: String1OrderByExp
+        - fieldName: paymentDate
+          orderByExpression: DateOrderByExp
+        - fieldName: status
+          orderByExpression: String1OrderByExp
+        - fieldName: userId
+          orderByExpression: UuidOrderByExp
+      orderableRelationships:
+        - relationshipName: user
+  graphql:
+    expressionTypeName: PaymentsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: Payments
+  objectType: Payments
+  source:
+    dataConnectorName: telco_demo_connector
+    collection: payments
+  filterExpressionType: PaymentsBoolExp
+  aggregateExpression: PaymentsAggExp
+  orderByExpression: PaymentsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: payments
+      subscription:
+        rootField: payments
+    selectUniques:
+      - queryRootField: paymentsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: paymentsById
+    filterInputTypeName: PaymentsFilterInput
+    aggregate:
+      queryRootField: paymentsAggregate
+      subscription:
+        rootField: paymentsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: Payments
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+    - role: family-admin
+      select:
+        filter: null
+        allowSubscriptions: true
+    - role: family-member
+      select:
+        filter: null
+        allowSubscriptions: true
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: user
+  sourceType: Payments
+  target:
+    model:
+      name: Users
+      relationshipType: Object
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: userId
+      target:
+        modelField:
+          - fieldName: id
+

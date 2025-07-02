@@ -1,0 +1,229 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: Families
+  fields:
+    - name: createdAt
+      type: Timestamp
+    - name: id
+      type: Uuid!
+    - name: name
+      type: String_1!
+    - name: primaryUserId
+      type: Uuid
+  graphql:
+    typeName: Families
+    inputTypeName: FamiliesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: families
+      fieldMapping:
+        createdAt:
+          column:
+            name: created_at
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+        primaryUserId:
+          column:
+            name: primary_user_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: Families
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - createdAt
+          - id
+          - name
+          - primaryUserId
+    - role: family-admin
+      output:
+        allowedFields:
+          - createdAt
+          - id
+          - name
+          - primaryUserId
+    - role: family-member
+      output:
+        allowedFields:
+          - createdAt
+          - id
+          - name
+          - primaryUserId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: FamiliesBoolExp
+  operand:
+    object:
+      type: Families
+      comparableFields:
+        - fieldName: createdAt
+          booleanExpressionType: TimestampBoolExp
+        - fieldName: id
+          booleanExpressionType: UuidBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: primaryUserId
+          booleanExpressionType: UuidBoolExp
+      comparableRelationships:
+        - relationshipName: user
+        - relationshipName: familyMembers
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: FamiliesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: FamiliesAggExp
+  operand:
+    object:
+      aggregatedType: Families
+      aggregatableFields:
+        - fieldName: createdAt
+          aggregateExpression: TimestampAggExp
+        - fieldName: id
+          aggregateExpression: UuidAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: primaryUserId
+          aggregateExpression: UuidAggExp
+  count:
+    enable: true
+  graphql:
+    selectTypeName: FamiliesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: FamiliesOrderByExp
+  operand:
+    object:
+      orderedType: Families
+      orderableFields:
+        - fieldName: createdAt
+          orderByExpression: TimestampOrderByExp
+        - fieldName: id
+          orderByExpression: UuidOrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: primaryUserId
+          orderByExpression: UuidOrderByExp
+      orderableRelationships:
+        - relationshipName: user
+  graphql:
+    expressionTypeName: FamiliesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: Families
+  objectType: Families
+  source:
+    dataConnectorName: telco_demo_connector
+    collection: families
+  filterExpressionType: FamiliesBoolExp
+  aggregateExpression: FamiliesAggExp
+  orderByExpression: FamiliesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: families
+      subscription:
+        rootField: families
+    selectUniques:
+      - queryRootField: familiesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: familiesById
+    filterInputTypeName: FamiliesFilterInput
+    aggregate:
+      queryRootField: familiesAggregate
+      subscription:
+        rootField: familiesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: Families
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+    - role: family-admin
+      select:
+        filter: null
+        allowSubscriptions: true
+    - role: family-member
+      select:
+        filter: null
+        allowSubscriptions: true
+    - role: user
+      select:
+        filter:
+          fieldComparison:
+            field: primaryUserId
+            operator: _eq
+            value:
+              sessionVariable: x-hasura-user-id
+
+---              
+kind: Relationship
+version: v1
+definition:
+  name: user
+  sourceType: Families
+  target:
+    model:
+      name: Users
+      relationshipType: Object
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: primaryUserId
+      target:
+        modelField:
+          - fieldName: id
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: familyMembers
+  sourceType: Families
+  target:
+    model:
+      name: FamilyMembers
+      relationshipType: Array
+      aggregate:
+        aggregateExpression: FamilyMembersAggExp
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: id
+      target:
+        modelField:
+          - fieldName: familyId
+  graphql:
+    aggregateFieldName: familyMembersAggregate
+

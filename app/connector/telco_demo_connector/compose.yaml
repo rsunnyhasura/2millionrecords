@@ -1,0 +1,14 @@
+services:
+  app_telco_demo_connector:
+    build:
+      context: .
+      dockerfile: .hasura-connector/Dockerfile.telco_demo_connector
+    environment:
+      CONNECTION_URI: $APP_TELCO_DEMO_CONNECTOR_CONNECTION_URI
+      HASURA_SERVICE_TOKEN_SECRET: $APP_TELCO_DEMO_CONNECTOR_HASURA_SERVICE_TOKEN_SECRET
+      OTEL_EXPORTER_OTLP_ENDPOINT: $APP_TELCO_DEMO_CONNECTOR_OTEL_EXPORTER_OTLP_ENDPOINT
+      OTEL_SERVICE_NAME: $APP_TELCO_DEMO_CONNECTOR_OTEL_SERVICE_NAME
+    extra_hosts:
+      - local.hasura.dev:host-gateway
+    ports:
+      - 5116:8080

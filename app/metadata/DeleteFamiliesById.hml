@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteFamiliesByIdResponse
+  description: Responses from the 'delete_families_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[Families!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteFamiliesByIdResponse
+    inputTypeName: DeleteFamiliesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: delete_families_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteFamiliesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteFamiliesById
+  outputType: DeleteFamiliesByIdResponse!
+  arguments:
+    - name: keyId
+      type: Uuid!
+    - name: preCheck
+      type: FamiliesBoolExp
+      description: Delete permission predicate over the 'families' collection
+  source:
+    dataConnectorName: telco_demo_connector
+    dataConnectorCommand:
+      procedure: delete_families_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteFamiliesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'families' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteFamiliesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

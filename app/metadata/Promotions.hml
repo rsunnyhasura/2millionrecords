@@ -1,0 +1,249 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: Promotions
+  fields:
+    - name: applicablePlanId
+      type: Uuid
+    - name: description
+      type: String_1
+    - name: discountPercentage
+      type: Bigdecimal
+    - name: endDate
+      type: Date
+    - name: id
+      type: Uuid!
+    - name: name
+      type: String_1
+    - name: startDate
+      type: Date
+  graphql:
+    typeName: Promotions
+    inputTypeName: PromotionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: promotions
+      fieldMapping:
+        applicablePlanId:
+          column:
+            name: applicable_plan_id
+        description:
+          column:
+            name: description
+        discountPercentage:
+          column:
+            name: discount_percentage
+        endDate:
+          column:
+            name: end_date
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+        startDate:
+          column:
+            name: start_date
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: Promotions
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - applicablePlanId
+          - description
+          - discountPercentage
+          - endDate
+          - id
+          - name
+          - startDate
+    - role: family-admin
+      output:
+        allowedFields:
+          - applicablePlanId
+          - description
+          - discountPercentage
+          - endDate
+          - id
+          - name
+          - startDate
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: PromotionsBoolExp
+  operand:
+    object:
+      type: Promotions
+      comparableFields:
+        - fieldName: applicablePlanId
+          booleanExpressionType: UuidBoolExp
+        - fieldName: description
+          booleanExpressionType: TextBoolExp
+        - fieldName: discountPercentage
+          booleanExpressionType: NumericBoolExp
+        - fieldName: endDate
+          booleanExpressionType: DateBoolExp
+        - fieldName: id
+          booleanExpressionType: UuidBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: startDate
+          booleanExpressionType: DateBoolExp
+      comparableRelationships:
+        - relationshipName: plan
+        - relationshipName: userPromotions
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: PromotionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: PromotionsAggExp
+  operand:
+    object:
+      aggregatedType: Promotions
+      aggregatableFields:
+        - fieldName: applicablePlanId
+          aggregateExpression: UuidAggExp
+        - fieldName: description
+          aggregateExpression: TextAggExp
+        - fieldName: discountPercentage
+          aggregateExpression: NumericAggExp
+        - fieldName: endDate
+          aggregateExpression: DateAggExp
+        - fieldName: id
+          aggregateExpression: UuidAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: startDate
+          aggregateExpression: DateAggExp
+  count:
+    enable: true
+  graphql:
+    selectTypeName: PromotionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: PromotionsOrderByExp
+  operand:
+    object:
+      orderedType: Promotions
+      orderableFields:
+        - fieldName: applicablePlanId
+          orderByExpression: UuidOrderByExp
+        - fieldName: description
+          orderByExpression: String1OrderByExp
+        - fieldName: discountPercentage
+          orderByExpression: BigdecimalOrderByExp
+        - fieldName: endDate
+          orderByExpression: DateOrderByExp
+        - fieldName: id
+          orderByExpression: UuidOrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: startDate
+          orderByExpression: DateOrderByExp
+      orderableRelationships:
+        - relationshipName: plan
+  graphql:
+    expressionTypeName: PromotionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: Promotions
+  objectType: Promotions
+  source:
+    dataConnectorName: telco_demo_connector
+    collection: promotions
+  filterExpressionType: PromotionsBoolExp
+  aggregateExpression: PromotionsAggExp
+  orderByExpression: PromotionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: promotions
+      subscription:
+        rootField: promotions
+    selectUniques:
+      - queryRootField: promotionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: promotionsById
+    filterInputTypeName: PromotionsFilterInput
+    aggregate:
+      queryRootField: promotionsAggregate
+      subscription:
+        rootField: promotionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: Promotions
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+    - role: family-admin
+      select:
+        filter: null
+        allowSubscriptions: true
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: plan
+  sourceType: Promotions
+  target:
+    model:
+      name: Plans
+      relationshipType: Object
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: applicablePlanId
+      target:
+        modelField:
+          - fieldName: id
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: userPromotions
+  sourceType: Promotions
+  target:
+    model:
+      name: UserPromotions
+      relationshipType: Array
+      aggregate:
+        aggregateExpression: UserPromotionsAggExp
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: id
+      target:
+        modelField:
+          - fieldName: promotionId
+  graphql:
+    aggregateFieldName: userPromotionsAggregate
+

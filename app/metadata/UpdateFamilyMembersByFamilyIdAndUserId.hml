@@ -1,0 +1,227 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnFamilyMembersFamilyId
+  description: Update the 'family_id' column in the 'family_members' collection
+  fields:
+    - name: set
+      type: Uuid!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnFamilyMembersFamilyId
+    inputTypeName: UpdateColumnFamilyMembersFamilyIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_family_members_family_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnFamilyMembersFamilyId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnFamilyMembersRelationship
+  description: Update the 'relationship' column in the 'family_members' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnFamilyMembersRelationship
+    inputTypeName: UpdateColumnFamilyMembersRelationshipInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_family_members_relationship
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnFamilyMembersRelationship
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnFamilyMembersUserId
+  description: Update the 'user_id' column in the 'family_members' collection
+  fields:
+    - name: set
+      type: Uuid!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnFamilyMembersUserId
+    inputTypeName: UpdateColumnFamilyMembersUserIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_family_members_user_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnFamilyMembersUserId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateFamilyMembersByFamilyIdAndUserIdUpdateColumns
+  description: Update the columns of the 'family_members' collection
+  fields:
+    - name: familyId
+      type: UpdateColumnFamilyMembersFamilyId
+      description: Update the 'family_id' column in the 'family_members' collection.
+    - name: relationship
+      type: UpdateColumnFamilyMembersRelationship
+      description: Update the 'relationship' column in the 'family_members' collection.
+    - name: userId
+      type: UpdateColumnFamilyMembersUserId
+      description: Update the 'user_id' column in the 'family_members' collection.
+  graphql:
+    typeName: UpdateFamilyMembersByFamilyIdAndUserIdUpdateColumns
+    inputTypeName: UpdateFamilyMembersByFamilyIdAndUserIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_family_members_by_family_id_and_user_id_update_columns
+      fieldMapping:
+        familyId:
+          column:
+            name: family_id
+        relationship:
+          column:
+            name: relationship
+        userId:
+          column:
+            name: user_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateFamilyMembersByFamilyIdAndUserIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - familyId
+          - relationship
+          - userId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateFamilyMembersByFamilyIdAndUserIdResponse
+  description: Responses from the 'update_family_members_by_family_id_and_user_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[FamilyMembers!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateFamilyMembersByFamilyIdAndUserIdResponse
+    inputTypeName: UpdateFamilyMembersByFamilyIdAndUserIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_family_members_by_family_id_and_user_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateFamilyMembersByFamilyIdAndUserIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateFamilyMembersByFamilyIdAndUserId
+  outputType: UpdateFamilyMembersByFamilyIdAndUserIdResponse!
+  arguments:
+    - name: keyFamilyId
+      type: Uuid!
+    - name: keyUserId
+      type: Uuid!
+    - name: postCheck
+      type: FamilyMembersBoolExp
+      description: Update permission post-condition predicate over the
+        'family_members' collection
+    - name: preCheck
+      type: FamilyMembersBoolExp
+      description: Update permission pre-condition predicate over the 'family_members'
+        collection
+    - name: updateColumns
+      type: UpdateFamilyMembersByFamilyIdAndUserIdUpdateColumns!
+  source:
+    dataConnectorName: telco_demo_connector
+    dataConnectorCommand:
+      procedure: update_family_members_by_family_id_and_user_id
+    argumentMapping:
+      keyFamilyId: key_family_id
+      keyUserId: key_user_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateFamilyMembersByFamilyIdAndUserId
+    rootFieldKind: Mutation
+  description: Update any row on the 'family_members' collection using the
+    'family_id' and 'user_id' keys
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateFamilyMembersByFamilyIdAndUserId
+  permissions:
+    - role: admin
+      allowExecution: true
+

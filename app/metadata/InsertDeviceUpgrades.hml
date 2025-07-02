@@ -1,0 +1,132 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertDeviceUpgradesObject
+  fields:
+    - name: id
+      type: Uuid!
+    - name: newDeviceId
+      type: Uuid
+    - name: oldDeviceId
+      type: Uuid
+    - name: upgradeDate
+      type: Date
+    - name: upgradeType
+      type: String_1
+    - name: userId
+      type: Uuid
+  graphql:
+    typeName: InsertDeviceUpgradesObject
+    inputTypeName: InsertDeviceUpgradesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: insert_device_upgrades_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        newDeviceId:
+          column:
+            name: new_device_id
+        oldDeviceId:
+          column:
+            name: old_device_id
+        upgradeDate:
+          column:
+            name: upgrade_date
+        upgradeType:
+          column:
+            name: upgrade_type
+        userId:
+          column:
+            name: user_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertDeviceUpgradesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - newDeviceId
+          - oldDeviceId
+          - upgradeDate
+          - upgradeType
+          - userId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertDeviceUpgradesResponse
+  description: Responses from the 'insert_device_upgrades' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[DeviceUpgrades!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertDeviceUpgradesResponse
+    inputTypeName: InsertDeviceUpgradesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: insert_device_upgrades_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertDeviceUpgradesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertDeviceUpgrades
+  outputType: InsertDeviceUpgradesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertDeviceUpgradesObject!]!"
+    - name: postCheck
+      type: DeviceUpgradesBoolExp
+      description: Insert permission predicate over the 'device_upgrades' collection
+  source:
+    dataConnectorName: telco_demo_connector
+    dataConnectorCommand:
+      procedure: insert_device_upgrades
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertDeviceUpgrades
+    rootFieldKind: Mutation
+  description: Insert into the device_upgrades table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertDeviceUpgrades
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,139 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertCustomerSupportTicketsObject
+  fields:
+    - name: createdAt
+      type: Timestamp
+    - name: description
+      type: String_1
+    - name: id
+      type: Uuid!
+    - name: issueType
+      type: String_1
+    - name: resolvedAt
+      type: Timestamp
+    - name: status
+      type: String_1
+    - name: userId
+      type: Uuid
+  graphql:
+    typeName: InsertCustomerSupportTicketsObject
+    inputTypeName: InsertCustomerSupportTicketsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: insert_customer_support_tickets_object
+      fieldMapping:
+        createdAt:
+          column:
+            name: created_at
+        description:
+          column:
+            name: description
+        id:
+          column:
+            name: id
+        issueType:
+          column:
+            name: issue_type
+        resolvedAt:
+          column:
+            name: resolved_at
+        status:
+          column:
+            name: status
+        userId:
+          column:
+            name: user_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertCustomerSupportTicketsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - createdAt
+          - description
+          - id
+          - issueType
+          - resolvedAt
+          - status
+          - userId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertCustomerSupportTicketsResponse
+  description: Responses from the 'insert_customer_support_tickets' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[CustomerSupportTickets!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertCustomerSupportTicketsResponse
+    inputTypeName: InsertCustomerSupportTicketsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: insert_customer_support_tickets_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertCustomerSupportTicketsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertCustomerSupportTickets
+  outputType: InsertCustomerSupportTicketsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertCustomerSupportTicketsObject!]!"
+    - name: postCheck
+      type: CustomerSupportTicketsBoolExp
+      description: Insert permission predicate over the 'customer_support_tickets'
+        collection
+  source:
+    dataConnectorName: telco_demo_connector
+    dataConnectorCommand:
+      procedure: insert_customer_support_tickets
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertCustomerSupportTickets
+    rootFieldKind: Mutation
+  description: Insert into the customer_support_tickets table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertCustomerSupportTickets
+  permissions:
+    - role: admin
+      allowExecution: true
+

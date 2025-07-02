@@ -1,0 +1,280 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: Plans
+  fields:
+    - name: callMinutes
+      type: Int32
+    - name: dataLimitGb
+      type: Bigdecimal
+    - name: description
+      type: String_1
+    - name: id
+      type: Uuid!
+    - name: name
+      type: String_1
+    - name: price
+      type: Bigdecimal
+    - name: smsLimit
+      type: Int32
+    - name: type
+      type: String_1
+  graphql:
+    typeName: Plans
+    inputTypeName: PlansInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: plans
+      fieldMapping:
+        callMinutes:
+          column:
+            name: call_minutes
+        dataLimitGb:
+          column:
+            name: data_limit_gb
+        description:
+          column:
+            name: description
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+        price:
+          column:
+            name: price
+        smsLimit:
+          column:
+            name: sms_limit
+        type:
+          column:
+            name: type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: Plans
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - callMinutes
+          - dataLimitGb
+          - description
+          - id
+          - name
+          - price
+          - smsLimit
+          - type
+    - role: family-admin
+      output:
+        allowedFields:
+          - callMinutes
+          - dataLimitGb
+          - description
+          - id
+          - name
+          - price
+          - smsLimit
+          - type
+    - role: family-member
+      output:
+        allowedFields:
+          - callMinutes
+          - dataLimitGb
+          - description
+          - id
+          - name
+          - price
+          - smsLimit
+          - type
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: PlansBoolExp
+  operand:
+    object:
+      type: Plans
+      comparableFields:
+        - fieldName: callMinutes
+          booleanExpressionType: Int4BoolExp
+        - fieldName: dataLimitGb
+          booleanExpressionType: NumericBoolExp
+        - fieldName: description
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: UuidBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: price
+          booleanExpressionType: NumericBoolExp
+        - fieldName: smsLimit
+          booleanExpressionType: Int4BoolExp
+        - fieldName: type
+          booleanExpressionType: TextBoolExp
+      comparableRelationships:
+        - relationshipName: promotions
+        - relationshipName: userPlans
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: PlansBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: PlansAggExp
+  operand:
+    object:
+      aggregatedType: Plans
+      aggregatableFields:
+        - fieldName: callMinutes
+          aggregateExpression: Int4AggExp
+        - fieldName: dataLimitGb
+          aggregateExpression: NumericAggExp
+        - fieldName: description
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: UuidAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: price
+          aggregateExpression: NumericAggExp
+        - fieldName: smsLimit
+          aggregateExpression: Int4AggExp
+        - fieldName: type
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+  graphql:
+    selectTypeName: PlansAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: PlansOrderByExp
+  operand:
+    object:
+      orderedType: Plans
+      orderableFields:
+        - fieldName: callMinutes
+          orderByExpression: Int32OrderByExp
+        - fieldName: dataLimitGb
+          orderByExpression: BigdecimalOrderByExp
+        - fieldName: description
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: UuidOrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: price
+          orderByExpression: BigdecimalOrderByExp
+        - fieldName: smsLimit
+          orderByExpression: Int32OrderByExp
+        - fieldName: type
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: PlansOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: Plans
+  objectType: Plans
+  source:
+    dataConnectorName: telco_demo_connector
+    collection: plans
+  filterExpressionType: PlansBoolExp
+  aggregateExpression: PlansAggExp
+  orderByExpression: PlansOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: plans
+      subscription:
+        rootField: plans
+    selectUniques:
+      - queryRootField: plansById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: plansById
+    filterInputTypeName: PlansFilterInput
+    aggregate:
+      queryRootField: plansAggregate
+      subscription:
+        rootField: plansAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: Plans
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+    - role: family-admin
+      select:
+        filter: null
+        allowSubscriptions: true
+    - role: family-member
+      select:
+        filter: null
+        allowSubscriptions: true
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: promotions
+  sourceType: Plans
+  target:
+    model:
+      name: Promotions
+      relationshipType: Array
+      aggregate:
+        aggregateExpression: PromotionsAggExp
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: id
+      target:
+        modelField:
+          - fieldName: applicablePlanId
+  graphql:
+    aggregateFieldName: promotionsAggregate
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: userPlans
+  sourceType: Plans
+  target:
+    model:
+      name: UserPlans
+      relationshipType: Array
+      aggregate:
+        aggregateExpression: UserPlansAggExp
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: id
+      target:
+        modelField:
+          - fieldName: planId
+  graphql:
+    aggregateFieldName: userPlansAggregate
+

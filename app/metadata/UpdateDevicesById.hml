@@ -1,0 +1,416 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnDevicesId
+  description: Update the 'id' column in the 'devices' collection
+  fields:
+    - name: set
+      type: Uuid!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnDevicesId
+    inputTypeName: UpdateColumnDevicesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_devices_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnDevicesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnDevicesImei
+  description: Update the 'imei' column in the 'devices' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnDevicesImei
+    inputTypeName: UpdateColumnDevicesImeiInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_devices_imei
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnDevicesImei
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnDevicesIsActive
+  description: Update the 'is_active' column in the 'devices' collection
+  fields:
+    - name: set
+      type: Boolean_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnDevicesIsActive
+    inputTypeName: UpdateColumnDevicesIsActiveInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_devices_is_active
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnDevicesIsActive
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnDevicesManufacturer
+  description: Update the 'manufacturer' column in the 'devices' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnDevicesManufacturer
+    inputTypeName: UpdateColumnDevicesManufacturerInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_devices_manufacturer
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnDevicesManufacturer
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnDevicesModel
+  description: Update the 'model' column in the 'devices' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnDevicesModel
+    inputTypeName: UpdateColumnDevicesModelInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_devices_model
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnDevicesModel
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnDevicesOs
+  description: Update the 'os' column in the 'devices' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnDevicesOs
+    inputTypeName: UpdateColumnDevicesOsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_devices_os
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnDevicesOs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnDevicesPurchaseDate
+  description: Update the 'purchase_date' column in the 'devices' collection
+  fields:
+    - name: set
+      type: Date
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnDevicesPurchaseDate
+    inputTypeName: UpdateColumnDevicesPurchaseDateInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_devices_purchase_date
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnDevicesPurchaseDate
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnDevicesUserId
+  description: Update the 'user_id' column in the 'devices' collection
+  fields:
+    - name: set
+      type: Uuid
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnDevicesUserId
+    inputTypeName: UpdateColumnDevicesUserIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_devices_user_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnDevicesUserId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateDevicesByIdUpdateColumns
+  description: Update the columns of the 'devices' collection
+  fields:
+    - name: id
+      type: UpdateColumnDevicesId
+      description: Update the 'id' column in the 'devices' collection.
+    - name: imei
+      type: UpdateColumnDevicesImei
+      description: Update the 'imei' column in the 'devices' collection.
+    - name: isActive
+      type: UpdateColumnDevicesIsActive
+      description: Update the 'is_active' column in the 'devices' collection.
+    - name: manufacturer
+      type: UpdateColumnDevicesManufacturer
+      description: Update the 'manufacturer' column in the 'devices' collection.
+    - name: model
+      type: UpdateColumnDevicesModel
+      description: Update the 'model' column in the 'devices' collection.
+    - name: os
+      type: UpdateColumnDevicesOs
+      description: Update the 'os' column in the 'devices' collection.
+    - name: purchaseDate
+      type: UpdateColumnDevicesPurchaseDate
+      description: Update the 'purchase_date' column in the 'devices' collection.
+    - name: userId
+      type: UpdateColumnDevicesUserId
+      description: Update the 'user_id' column in the 'devices' collection.
+  graphql:
+    typeName: UpdateDevicesByIdUpdateColumns
+    inputTypeName: UpdateDevicesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_devices_by_id_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        imei:
+          column:
+            name: imei
+        isActive:
+          column:
+            name: is_active
+        manufacturer:
+          column:
+            name: manufacturer
+        model:
+          column:
+            name: model
+        os:
+          column:
+            name: os
+        purchaseDate:
+          column:
+            name: purchase_date
+        userId:
+          column:
+            name: user_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateDevicesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - imei
+          - isActive
+          - manufacturer
+          - model
+          - os
+          - purchaseDate
+          - userId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateDevicesByIdResponse
+  description: Responses from the 'update_devices_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[Devices!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateDevicesByIdResponse
+    inputTypeName: UpdateDevicesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_devices_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateDevicesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateDevicesById
+  outputType: UpdateDevicesByIdResponse!
+  arguments:
+    - name: keyId
+      type: Uuid!
+    - name: postCheck
+      type: DevicesBoolExp
+      description: Update permission post-condition predicate over the 'devices' collection
+    - name: preCheck
+      type: DevicesBoolExp
+      description: Update permission pre-condition predicate over the 'devices' collection
+    - name: updateColumns
+      type: UpdateDevicesByIdUpdateColumns!
+  source:
+    dataConnectorName: telco_demo_connector
+    dataConnectorCommand:
+      procedure: update_devices_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateDevicesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'devices' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateDevicesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

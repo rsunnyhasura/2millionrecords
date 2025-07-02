@@ -1,0 +1,456 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: Users
+  fields:
+    - name: createdAt
+      type: Timestamp
+    - name: dob
+      type: Date
+    - name: email
+      type: String_1!
+    - name: firstName
+      type: String_1!
+    - name: id
+      type: Uuid!
+    - name: isPrimary
+      type: Boolean_1
+    - name: lastName
+      type: String_1!
+    - name: phone
+      type: String_1
+    - name: updatedAt
+      type: Timestamp
+  graphql:
+    typeName: Users
+    inputTypeName: UsersInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: users
+      fieldMapping:
+        createdAt:
+          column:
+            name: created_at
+        dob:
+          column:
+            name: dob
+        email:
+          column:
+            name: email
+        firstName:
+          column:
+            name: first_name
+        id:
+          column:
+            name: id
+        isPrimary:
+          column:
+            name: is_primary
+        lastName:
+          column:
+            name: last_name
+        phone:
+          column:
+            name: phone
+        updatedAt:
+          column:
+            name: updated_at
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: Users
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - createdAt
+          - dob
+          - email
+          - firstName
+          - id
+          - isPrimary
+          - lastName
+          - phone
+          - updatedAt
+    - role: family-admin
+      output:
+        allowedFields:
+          - createdAt
+          - dob
+          - email
+          - firstName
+          - id
+          - isPrimary
+          - lastName
+          - phone
+          - updatedAt
+    - role: family-member
+      output:
+        allowedFields:
+          - createdAt
+          - dob
+          - email
+          - firstName
+          - id
+          - isPrimary
+          - lastName
+          - phone
+          - updatedAt
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: UsersBoolExp
+  operand:
+    object:
+      type: Users
+      comparableFields:
+        - fieldName: createdAt
+          booleanExpressionType: TimestampBoolExp
+        - fieldName: dob
+          booleanExpressionType: DateBoolExp
+        - fieldName: email
+          booleanExpressionType: TextBoolExp
+        - fieldName: firstName
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: UuidBoolExp
+        - fieldName: isPrimary
+          booleanExpressionType: BoolBoolExp
+        - fieldName: lastName
+          booleanExpressionType: TextBoolExp
+        - fieldName: phone
+          booleanExpressionType: TextBoolExp
+        - fieldName: updatedAt
+          booleanExpressionType: TimestampBoolExp
+      comparableRelationships:
+        - relationshipName: customerSupportTickets
+        - relationshipName: deviceUpgrades
+        - relationshipName: devices
+        - relationshipName: families
+        - relationshipName: familyMembers
+        - relationshipName: payments
+        - relationshipName: usages
+        - relationshipName: userPlans
+        - relationshipName: userPromotions
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: UsersBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: UsersAggExp
+  operand:
+    object:
+      aggregatedType: Users
+      aggregatableFields:
+        - fieldName: createdAt
+          aggregateExpression: TimestampAggExp
+        - fieldName: dob
+          aggregateExpression: DateAggExp
+        - fieldName: email
+          aggregateExpression: TextAggExp
+        - fieldName: firstName
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: UuidAggExp
+        - fieldName: isPrimary
+          aggregateExpression: BoolAggExp
+        - fieldName: lastName
+          aggregateExpression: TextAggExp
+        - fieldName: phone
+          aggregateExpression: TextAggExp
+        - fieldName: updatedAt
+          aggregateExpression: TimestampAggExp
+  count:
+    enable: true
+  graphql:
+    selectTypeName: UsersAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: UsersOrderByExp
+  operand:
+    object:
+      orderedType: Users
+      orderableFields:
+        - fieldName: createdAt
+          orderByExpression: TimestampOrderByExp
+        - fieldName: dob
+          orderByExpression: DateOrderByExp
+        - fieldName: email
+          orderByExpression: String1OrderByExp
+        - fieldName: firstName
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: UuidOrderByExp
+        - fieldName: isPrimary
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: lastName
+          orderByExpression: String1OrderByExp
+        - fieldName: phone
+          orderByExpression: String1OrderByExp
+        - fieldName: updatedAt
+          orderByExpression: TimestampOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: UsersOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: Users
+  objectType: Users
+  source:
+    dataConnectorName: telco_demo_connector
+    collection: users
+  filterExpressionType: UsersBoolExp
+  aggregateExpression: UsersAggExp
+  orderByExpression: UsersOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: users
+      subscription:
+        rootField: users
+    selectUniques:
+      - queryRootField: usersById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: usersById
+    filterInputTypeName: UsersFilterInput
+    aggregate:
+      queryRootField: usersAggregate
+      subscription:
+        rootField: usersAggregate
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: Users
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+    - role: family-admin
+      select:
+        filter: null
+        allowSubscriptions: true
+    - role: family-member
+      select:
+        filter: null
+        allowSubscriptions: true
+
+
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: customerSupportTickets
+  sourceType: Users
+  target:
+    model:
+      name: CustomerSupportTickets
+      relationshipType: Array
+      aggregate:
+        aggregateExpression: CustomerSupportTicketsAggExp
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: id
+      target:
+        modelField:
+          - fieldName: userId
+  graphql:
+    aggregateFieldName: customerSupportTicketsAggregate
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: deviceUpgrades
+  sourceType: Users
+  target:
+    model:
+      name: DeviceUpgrades
+      relationshipType: Array
+      aggregate:
+        aggregateExpression: DeviceUpgradesAggExp
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: id
+      target:
+        modelField:
+          - fieldName: userId
+  graphql:
+    aggregateFieldName: deviceUpgradesAggregate
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: devices
+  sourceType: Users
+  target:
+    model:
+      name: Devices
+      relationshipType: Array
+      aggregate:
+        aggregateExpression: DevicesAggExp
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: id
+      target:
+        modelField:
+          - fieldName: userId
+  graphql:
+    aggregateFieldName: devicesAggregate
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: families
+  sourceType: Users
+  target:
+    model:
+      name: Families
+      relationshipType: Array
+      aggregate:
+        aggregateExpression: FamiliesAggExp
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: id
+      target:
+        modelField:
+          - fieldName: primaryUserId
+  graphql:
+    aggregateFieldName: familiesAggregate
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: familyMembers
+  sourceType: Users
+  target:
+    model:
+      name: FamilyMembers
+      relationshipType: Array
+      aggregate:
+        aggregateExpression: FamilyMembersAggExp
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: id
+      target:
+        modelField:
+          - fieldName: userId
+  graphql:
+    aggregateFieldName: familyMembersAggregate
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: payments
+  sourceType: Users
+  target:
+    model:
+      name: Payments
+      relationshipType: Array
+      aggregate:
+        aggregateExpression: PaymentsAggExp
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: id
+      target:
+        modelField:
+          - fieldName: userId
+  graphql:
+    aggregateFieldName: paymentsAggregate
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: usages
+  sourceType: Users
+  target:
+    model:
+      name: Usage
+      relationshipType: Array
+      aggregate:
+        aggregateExpression: UsageAggExp
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: id
+      target:
+        modelField:
+          - fieldName: userId
+  graphql:
+    aggregateFieldName: usagesAggregate
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: userPlans
+  sourceType: Users
+  target:
+    model:
+      name: UserPlans
+      relationshipType: Array
+      aggregate:
+        aggregateExpression: UserPlansAggExp
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: id
+      target:
+        modelField:
+          - fieldName: userId
+  graphql:
+    aggregateFieldName: userPlansAggregate
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: userPromotions
+  sourceType: Users
+  target:
+    model:
+      name: UserPromotions
+      relationshipType: Array
+      aggregate:
+        aggregateExpression: UserPromotionsAggExp
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: id
+      target:
+        modelField:
+          - fieldName: userId
+  graphql:
+    aggregateFieldName: userPromotionsAggregate
+

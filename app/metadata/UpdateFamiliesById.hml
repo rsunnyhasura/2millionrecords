@@ -1,0 +1,260 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnFamiliesCreatedAt
+  description: Update the 'created_at' column in the 'families' collection
+  fields:
+    - name: set
+      type: Timestamp
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnFamiliesCreatedAt
+    inputTypeName: UpdateColumnFamiliesCreatedAtInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_families_created_at
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnFamiliesCreatedAt
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnFamiliesId
+  description: Update the 'id' column in the 'families' collection
+  fields:
+    - name: set
+      type: Uuid!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnFamiliesId
+    inputTypeName: UpdateColumnFamiliesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_families_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnFamiliesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnFamiliesName
+  description: Update the 'name' column in the 'families' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnFamiliesName
+    inputTypeName: UpdateColumnFamiliesNameInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_families_name
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnFamiliesName
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnFamiliesPrimaryUserId
+  description: Update the 'primary_user_id' column in the 'families' collection
+  fields:
+    - name: set
+      type: Uuid
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnFamiliesPrimaryUserId
+    inputTypeName: UpdateColumnFamiliesPrimaryUserIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_families_primary_user_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnFamiliesPrimaryUserId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateFamiliesByIdUpdateColumns
+  description: Update the columns of the 'families' collection
+  fields:
+    - name: createdAt
+      type: UpdateColumnFamiliesCreatedAt
+      description: Update the 'created_at' column in the 'families' collection.
+    - name: id
+      type: UpdateColumnFamiliesId
+      description: Update the 'id' column in the 'families' collection.
+    - name: name
+      type: UpdateColumnFamiliesName
+      description: Update the 'name' column in the 'families' collection.
+    - name: primaryUserId
+      type: UpdateColumnFamiliesPrimaryUserId
+      description: Update the 'primary_user_id' column in the 'families' collection.
+  graphql:
+    typeName: UpdateFamiliesByIdUpdateColumns
+    inputTypeName: UpdateFamiliesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_families_by_id_update_columns
+      fieldMapping:
+        createdAt:
+          column:
+            name: created_at
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+        primaryUserId:
+          column:
+            name: primary_user_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateFamiliesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - createdAt
+          - id
+          - name
+          - primaryUserId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateFamiliesByIdResponse
+  description: Responses from the 'update_families_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[Families!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateFamiliesByIdResponse
+    inputTypeName: UpdateFamiliesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_families_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateFamiliesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateFamiliesById
+  outputType: UpdateFamiliesByIdResponse!
+  arguments:
+    - name: keyId
+      type: Uuid!
+    - name: postCheck
+      type: FamiliesBoolExp
+      description: Update permission post-condition predicate over the 'families' collection
+    - name: preCheck
+      type: FamiliesBoolExp
+      description: Update permission pre-condition predicate over the 'families' collection
+    - name: updateColumns
+      type: UpdateFamiliesByIdUpdateColumns!
+  source:
+    dataConnectorName: telco_demo_connector
+    dataConnectorCommand:
+      procedure: update_families_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateFamiliesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'families' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateFamiliesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

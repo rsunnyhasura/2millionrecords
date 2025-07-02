@@ -1,0 +1,207 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UserPromotions
+  fields:
+    - name: appliedOn
+      type: Timestamp
+    - name: id
+      type: Uuid!
+    - name: promotionId
+      type: Uuid
+    - name: userId
+      type: Uuid
+  graphql:
+    typeName: UserPromotions
+    inputTypeName: UserPromotionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: user_promotions
+      fieldMapping:
+        appliedOn:
+          column:
+            name: applied_on
+        id:
+          column:
+            name: id
+        promotionId:
+          column:
+            name: promotion_id
+        userId:
+          column:
+            name: user_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UserPromotions
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - appliedOn
+          - id
+          - promotionId
+          - userId
+    - role: family-admin
+      output:
+        allowedFields:
+          - appliedOn
+          - id
+          - promotionId
+          - userId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: UserPromotionsBoolExp
+  operand:
+    object:
+      type: UserPromotions
+      comparableFields:
+        - fieldName: appliedOn
+          booleanExpressionType: TimestampBoolExp
+        - fieldName: id
+          booleanExpressionType: UuidBoolExp
+        - fieldName: promotionId
+          booleanExpressionType: UuidBoolExp
+        - fieldName: userId
+          booleanExpressionType: UuidBoolExp
+      comparableRelationships:
+        - relationshipName: promotion
+        - relationshipName: user
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: UserPromotionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: UserPromotionsAggExp
+  operand:
+    object:
+      aggregatedType: UserPromotions
+      aggregatableFields:
+        - fieldName: appliedOn
+          aggregateExpression: TimestampAggExp
+        - fieldName: id
+          aggregateExpression: UuidAggExp
+        - fieldName: promotionId
+          aggregateExpression: UuidAggExp
+        - fieldName: userId
+          aggregateExpression: UuidAggExp
+  count:
+    enable: true
+  graphql:
+    selectTypeName: UserPromotionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: UserPromotionsOrderByExp
+  operand:
+    object:
+      orderedType: UserPromotions
+      orderableFields:
+        - fieldName: appliedOn
+          orderByExpression: TimestampOrderByExp
+        - fieldName: id
+          orderByExpression: UuidOrderByExp
+        - fieldName: promotionId
+          orderByExpression: UuidOrderByExp
+        - fieldName: userId
+          orderByExpression: UuidOrderByExp
+      orderableRelationships:
+        - relationshipName: promotion
+        - relationshipName: user
+  graphql:
+    expressionTypeName: UserPromotionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: UserPromotions
+  objectType: UserPromotions
+  source:
+    dataConnectorName: telco_demo_connector
+    collection: user_promotions
+  filterExpressionType: UserPromotionsBoolExp
+  aggregateExpression: UserPromotionsAggExp
+  orderByExpression: UserPromotionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: userPromotions
+      subscription:
+        rootField: userPromotions
+    selectUniques:
+      - queryRootField: userPromotionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: userPromotionsById
+    filterInputTypeName: UserPromotionsFilterInput
+    aggregate:
+      queryRootField: userPromotionsAggregate
+      subscription:
+        rootField: userPromotionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: UserPromotions
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+    - role: family-admin
+      select:
+        filter: null
+        allowSubscriptions: true
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: promotion
+  sourceType: UserPromotions
+  target:
+    model:
+      name: Promotions
+      relationshipType: Object
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: promotionId
+      target:
+        modelField:
+          - fieldName: id
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: user
+  sourceType: UserPromotions
+  target:
+    model:
+      name: Users
+      relationshipType: Object
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: userId
+      target:
+        modelField:
+          - fieldName: id
+

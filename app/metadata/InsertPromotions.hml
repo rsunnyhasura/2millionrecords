@@ -1,0 +1,138 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPromotionsObject
+  fields:
+    - name: applicablePlanId
+      type: Uuid
+    - name: description
+      type: String_1
+    - name: discountPercentage
+      type: Bigdecimal
+    - name: endDate
+      type: Date
+    - name: id
+      type: Uuid!
+    - name: name
+      type: String_1
+    - name: startDate
+      type: Date
+  graphql:
+    typeName: InsertPromotionsObject
+    inputTypeName: InsertPromotionsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: insert_promotions_object
+      fieldMapping:
+        applicablePlanId:
+          column:
+            name: applicable_plan_id
+        description:
+          column:
+            name: description
+        discountPercentage:
+          column:
+            name: discount_percentage
+        endDate:
+          column:
+            name: end_date
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+        startDate:
+          column:
+            name: start_date
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPromotionsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - applicablePlanId
+          - description
+          - discountPercentage
+          - endDate
+          - id
+          - name
+          - startDate
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPromotionsResponse
+  description: Responses from the 'insert_promotions' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[Promotions!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertPromotionsResponse
+    inputTypeName: InsertPromotionsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: insert_promotions_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPromotionsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertPromotions
+  outputType: InsertPromotionsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertPromotionsObject!]!"
+    - name: postCheck
+      type: PromotionsBoolExp
+      description: Insert permission predicate over the 'promotions' collection
+  source:
+    dataConnectorName: telco_demo_connector
+    dataConnectorCommand:
+      procedure: insert_promotions
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertPromotions
+    rootFieldKind: Mutation
+  description: Insert into the promotions table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertPromotions
+  permissions:
+    - role: admin
+      allowExecution: true
+

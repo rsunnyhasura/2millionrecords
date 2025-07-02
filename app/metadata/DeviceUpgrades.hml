@@ -1,0 +1,253 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeviceUpgrades
+  fields:
+    - name: id
+      type: Uuid!
+    - name: newDeviceId
+      type: Uuid
+    - name: oldDeviceId
+      type: Uuid
+    - name: upgradeDate
+      type: Date
+    - name: upgradeType
+      type: String_1
+    - name: userId
+      type: Uuid
+  graphql:
+    typeName: DeviceUpgrades
+    inputTypeName: DeviceUpgradesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: device_upgrades
+      fieldMapping:
+        id:
+          column:
+            name: id
+        newDeviceId:
+          column:
+            name: new_device_id
+        oldDeviceId:
+          column:
+            name: old_device_id
+        upgradeDate:
+          column:
+            name: upgrade_date
+        upgradeType:
+          column:
+            name: upgrade_type
+        userId:
+          column:
+            name: user_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeviceUpgrades
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - newDeviceId
+          - oldDeviceId
+          - upgradeDate
+          - upgradeType
+          - userId
+    - role: family-admin
+      output:
+        allowedFields:
+          - id
+          - newDeviceId
+          - oldDeviceId
+          - upgradeDate
+          - upgradeType
+          - userId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: DeviceUpgradesBoolExp
+  operand:
+    object:
+      type: DeviceUpgrades
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: UuidBoolExp
+        - fieldName: newDeviceId
+          booleanExpressionType: UuidBoolExp
+        - fieldName: oldDeviceId
+          booleanExpressionType: UuidBoolExp
+        - fieldName: upgradeDate
+          booleanExpressionType: DateBoolExp
+        - fieldName: upgradeType
+          booleanExpressionType: TextBoolExp
+        - fieldName: userId
+          booleanExpressionType: UuidBoolExp
+      comparableRelationships:
+        - relationshipName: device
+        - relationshipName: deviceByOldDeviceId
+        - relationshipName: user
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: DeviceUpgradesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: DeviceUpgradesAggExp
+  operand:
+    object:
+      aggregatedType: DeviceUpgrades
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: UuidAggExp
+        - fieldName: newDeviceId
+          aggregateExpression: UuidAggExp
+        - fieldName: oldDeviceId
+          aggregateExpression: UuidAggExp
+        - fieldName: upgradeDate
+          aggregateExpression: DateAggExp
+        - fieldName: upgradeType
+          aggregateExpression: TextAggExp
+        - fieldName: userId
+          aggregateExpression: UuidAggExp
+  count:
+    enable: true
+  graphql:
+    selectTypeName: DeviceUpgradesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: DeviceUpgradesOrderByExp
+  operand:
+    object:
+      orderedType: DeviceUpgrades
+      orderableFields:
+        - fieldName: id
+          orderByExpression: UuidOrderByExp
+        - fieldName: newDeviceId
+          orderByExpression: UuidOrderByExp
+        - fieldName: oldDeviceId
+          orderByExpression: UuidOrderByExp
+        - fieldName: upgradeDate
+          orderByExpression: DateOrderByExp
+        - fieldName: upgradeType
+          orderByExpression: String1OrderByExp
+        - fieldName: userId
+          orderByExpression: UuidOrderByExp
+      orderableRelationships:
+        - relationshipName: device
+        - relationshipName: deviceByOldDeviceId
+        - relationshipName: user
+  graphql:
+    expressionTypeName: DeviceUpgradesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: DeviceUpgrades
+  objectType: DeviceUpgrades
+  source:
+    dataConnectorName: telco_demo_connector
+    collection: device_upgrades
+  filterExpressionType: DeviceUpgradesBoolExp
+  aggregateExpression: DeviceUpgradesAggExp
+  orderByExpression: DeviceUpgradesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: deviceUpgrades
+      subscription:
+        rootField: deviceUpgrades
+    selectUniques:
+      - queryRootField: deviceUpgradesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: deviceUpgradesById
+    filterInputTypeName: DeviceUpgradesFilterInput
+    aggregate:
+      queryRootField: deviceUpgradesAggregate
+      subscription:
+        rootField: deviceUpgradesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: DeviceUpgrades
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+    - role: family-admin
+      select:
+        filter: null
+        allowSubscriptions: true
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: device
+  sourceType: DeviceUpgrades
+  target:
+    model:
+      name: Devices
+      relationshipType: Object
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: newDeviceId
+      target:
+        modelField:
+          - fieldName: id
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: deviceByOldDeviceId
+  sourceType: DeviceUpgrades
+  target:
+    model:
+      name: Devices
+      relationshipType: Object
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: oldDeviceId
+      target:
+        modelField:
+          - fieldName: id
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: user
+  sourceType: DeviceUpgrades
+  target:
+    model:
+      name: Users
+      relationshipType: Object
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: userId
+      target:
+        modelField:
+          - fieldName: id
+

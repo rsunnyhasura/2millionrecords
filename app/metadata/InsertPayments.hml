@@ -1,0 +1,132 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPaymentsObject
+  fields:
+    - name: amount
+      type: Bigdecimal
+    - name: id
+      type: Uuid!
+    - name: method
+      type: String_1
+    - name: paymentDate
+      type: Date
+    - name: status
+      type: String_1
+    - name: userId
+      type: Uuid
+  graphql:
+    typeName: InsertPaymentsObject
+    inputTypeName: InsertPaymentsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: insert_payments_object
+      fieldMapping:
+        amount:
+          column:
+            name: amount
+        id:
+          column:
+            name: id
+        method:
+          column:
+            name: method
+        paymentDate:
+          column:
+            name: payment_date
+        status:
+          column:
+            name: status
+        userId:
+          column:
+            name: user_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPaymentsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amount
+          - id
+          - method
+          - paymentDate
+          - status
+          - userId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPaymentsResponse
+  description: Responses from the 'insert_payments' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[Payments!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertPaymentsResponse
+    inputTypeName: InsertPaymentsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: insert_payments_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPaymentsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertPayments
+  outputType: InsertPaymentsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertPaymentsObject!]!"
+    - name: postCheck
+      type: PaymentsBoolExp
+      description: Insert permission predicate over the 'payments' collection
+  source:
+    dataConnectorName: telco_demo_connector
+    dataConnectorCommand:
+      procedure: insert_payments
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertPayments
+    rootFieldKind: Mutation
+  description: Insert into the payments table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertPayments
+  permissions:
+    - role: admin
+      allowExecution: true
+

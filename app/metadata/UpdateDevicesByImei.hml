@@ -1,0 +1,160 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateDevicesByImeiUpdateColumns
+  description: Update the columns of the 'devices' collection
+  fields:
+    - name: id
+      type: UpdateColumnDevicesId
+      description: Update the 'id' column in the 'devices' collection.
+    - name: imei
+      type: UpdateColumnDevicesImei
+      description: Update the 'imei' column in the 'devices' collection.
+    - name: isActive
+      type: UpdateColumnDevicesIsActive
+      description: Update the 'is_active' column in the 'devices' collection.
+    - name: manufacturer
+      type: UpdateColumnDevicesManufacturer
+      description: Update the 'manufacturer' column in the 'devices' collection.
+    - name: model
+      type: UpdateColumnDevicesModel
+      description: Update the 'model' column in the 'devices' collection.
+    - name: os
+      type: UpdateColumnDevicesOs
+      description: Update the 'os' column in the 'devices' collection.
+    - name: purchaseDate
+      type: UpdateColumnDevicesPurchaseDate
+      description: Update the 'purchase_date' column in the 'devices' collection.
+    - name: userId
+      type: UpdateColumnDevicesUserId
+      description: Update the 'user_id' column in the 'devices' collection.
+  graphql:
+    typeName: UpdateDevicesByImeiUpdateColumns
+    inputTypeName: UpdateDevicesByImeiUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_devices_by_imei_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        imei:
+          column:
+            name: imei
+        isActive:
+          column:
+            name: is_active
+        manufacturer:
+          column:
+            name: manufacturer
+        model:
+          column:
+            name: model
+        os:
+          column:
+            name: os
+        purchaseDate:
+          column:
+            name: purchase_date
+        userId:
+          column:
+            name: user_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateDevicesByImeiUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - imei
+          - isActive
+          - manufacturer
+          - model
+          - os
+          - purchaseDate
+          - userId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateDevicesByImeiResponse
+  description: Responses from the 'update_devices_by_imei' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[Devices!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateDevicesByImeiResponse
+    inputTypeName: UpdateDevicesByImeiResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_devices_by_imei_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateDevicesByImeiResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateDevicesByImei
+  outputType: UpdateDevicesByImeiResponse!
+  arguments:
+    - name: keyImei
+      type: String_1!
+    - name: postCheck
+      type: DevicesBoolExp
+      description: Update permission post-condition predicate over the 'devices' collection
+    - name: preCheck
+      type: DevicesBoolExp
+      description: Update permission pre-condition predicate over the 'devices' collection
+    - name: updateColumns
+      type: UpdateDevicesByImeiUpdateColumns!
+  source:
+    dataConnectorName: telco_demo_connector
+    dataConnectorCommand:
+      procedure: update_devices_by_imei
+    argumentMapping:
+      keyImei: key_imei
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateDevicesByImei
+    rootFieldKind: Mutation
+  description: Update any row on the 'devices' collection using the 'imei' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateDevicesByImei
+  permissions:
+    - role: admin
+      allowExecution: true
+

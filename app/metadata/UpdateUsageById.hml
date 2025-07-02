@@ -1,0 +1,377 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnUsageCallMinutesUsed
+  description: Update the 'call_minutes_used' column in the 'usage' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnUsageCallMinutesUsed
+    inputTypeName: UpdateColumnUsageCallMinutesUsedInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_usage_call_minutes_used
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnUsageCallMinutesUsed
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnUsageDataUsedGb
+  description: Update the 'data_used_gb' column in the 'usage' collection
+  fields:
+    - name: set
+      type: Bigdecimal
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnUsageDataUsedGb
+    inputTypeName: UpdateColumnUsageDataUsedGbInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_usage_data_used_gb
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnUsageDataUsedGb
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnUsageId
+  description: Update the 'id' column in the 'usage' collection
+  fields:
+    - name: set
+      type: Uuid!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnUsageId
+    inputTypeName: UpdateColumnUsageIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_usage_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnUsageId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnUsageSmsUsed
+  description: Update the 'sms_used' column in the 'usage' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnUsageSmsUsed
+    inputTypeName: UpdateColumnUsageSmsUsedInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_usage_sms_used
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnUsageSmsUsed
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnUsageUsagePeriodEnd
+  description: Update the 'usage_period_end' column in the 'usage' collection
+  fields:
+    - name: set
+      type: Date
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnUsageUsagePeriodEnd
+    inputTypeName: UpdateColumnUsageUsagePeriodEndInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_usage_usage_period_end
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnUsageUsagePeriodEnd
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnUsageUsagePeriodStart
+  description: Update the 'usage_period_start' column in the 'usage' collection
+  fields:
+    - name: set
+      type: Date
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnUsageUsagePeriodStart
+    inputTypeName: UpdateColumnUsageUsagePeriodStartInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_usage_usage_period_start
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnUsageUsagePeriodStart
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnUsageUserId
+  description: Update the 'user_id' column in the 'usage' collection
+  fields:
+    - name: set
+      type: Uuid
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnUsageUserId
+    inputTypeName: UpdateColumnUsageUserIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_usage_user_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnUsageUserId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateUsageByIdUpdateColumns
+  description: Update the columns of the 'usage' collection
+  fields:
+    - name: callMinutesUsed
+      type: UpdateColumnUsageCallMinutesUsed
+      description: Update the 'call_minutes_used' column in the 'usage' collection.
+    - name: dataUsedGb
+      type: UpdateColumnUsageDataUsedGb
+      description: Update the 'data_used_gb' column in the 'usage' collection.
+    - name: id
+      type: UpdateColumnUsageId
+      description: Update the 'id' column in the 'usage' collection.
+    - name: smsUsed
+      type: UpdateColumnUsageSmsUsed
+      description: Update the 'sms_used' column in the 'usage' collection.
+    - name: usagePeriodEnd
+      type: UpdateColumnUsageUsagePeriodEnd
+      description: Update the 'usage_period_end' column in the 'usage' collection.
+    - name: usagePeriodStart
+      type: UpdateColumnUsageUsagePeriodStart
+      description: Update the 'usage_period_start' column in the 'usage' collection.
+    - name: userId
+      type: UpdateColumnUsageUserId
+      description: Update the 'user_id' column in the 'usage' collection.
+  graphql:
+    typeName: UpdateUsageByIdUpdateColumns
+    inputTypeName: UpdateUsageByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_usage_by_id_update_columns
+      fieldMapping:
+        callMinutesUsed:
+          column:
+            name: call_minutes_used
+        dataUsedGb:
+          column:
+            name: data_used_gb
+        id:
+          column:
+            name: id
+        smsUsed:
+          column:
+            name: sms_used
+        usagePeriodEnd:
+          column:
+            name: usage_period_end
+        usagePeriodStart:
+          column:
+            name: usage_period_start
+        userId:
+          column:
+            name: user_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateUsageByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - callMinutesUsed
+          - dataUsedGb
+          - id
+          - smsUsed
+          - usagePeriodEnd
+          - usagePeriodStart
+          - userId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateUsageByIdResponse
+  description: Responses from the 'update_usage_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[Usage!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateUsageByIdResponse
+    inputTypeName: UpdateUsageByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_usage_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateUsageByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateUsageById
+  outputType: UpdateUsageByIdResponse!
+  arguments:
+    - name: keyId
+      type: Uuid!
+    - name: postCheck
+      type: UsageBoolExp
+      description: Update permission post-condition predicate over the 'usage' collection
+    - name: preCheck
+      type: UsageBoolExp
+      description: Update permission pre-condition predicate over the 'usage' collection
+    - name: updateColumns
+      type: UpdateUsageByIdUpdateColumns!
+  source:
+    dataConnectorName: telco_demo_connector
+    dataConnectorCommand:
+      procedure: update_usage_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateUsageById
+    rootFieldKind: Mutation
+  description: Update any row on the 'usage' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateUsageById
+  permissions:
+    - role: admin
+      allowExecution: true
+

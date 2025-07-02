@@ -1,0 +1,262 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnUserPromotionsAppliedOn
+  description: Update the 'applied_on' column in the 'user_promotions' collection
+  fields:
+    - name: set
+      type: Timestamp
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnUserPromotionsAppliedOn
+    inputTypeName: UpdateColumnUserPromotionsAppliedOnInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_user_promotions_applied_on
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnUserPromotionsAppliedOn
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnUserPromotionsId
+  description: Update the 'id' column in the 'user_promotions' collection
+  fields:
+    - name: set
+      type: Uuid!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnUserPromotionsId
+    inputTypeName: UpdateColumnUserPromotionsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_user_promotions_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnUserPromotionsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnUserPromotionsPromotionId
+  description: Update the 'promotion_id' column in the 'user_promotions' collection
+  fields:
+    - name: set
+      type: Uuid
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnUserPromotionsPromotionId
+    inputTypeName: UpdateColumnUserPromotionsPromotionIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_user_promotions_promotion_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnUserPromotionsPromotionId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnUserPromotionsUserId
+  description: Update the 'user_id' column in the 'user_promotions' collection
+  fields:
+    - name: set
+      type: Uuid
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnUserPromotionsUserId
+    inputTypeName: UpdateColumnUserPromotionsUserIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_user_promotions_user_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnUserPromotionsUserId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateUserPromotionsByIdUpdateColumns
+  description: Update the columns of the 'user_promotions' collection
+  fields:
+    - name: appliedOn
+      type: UpdateColumnUserPromotionsAppliedOn
+      description: Update the 'applied_on' column in the 'user_promotions' collection.
+    - name: id
+      type: UpdateColumnUserPromotionsId
+      description: Update the 'id' column in the 'user_promotions' collection.
+    - name: promotionId
+      type: UpdateColumnUserPromotionsPromotionId
+      description: Update the 'promotion_id' column in the 'user_promotions' collection.
+    - name: userId
+      type: UpdateColumnUserPromotionsUserId
+      description: Update the 'user_id' column in the 'user_promotions' collection.
+  graphql:
+    typeName: UpdateUserPromotionsByIdUpdateColumns
+    inputTypeName: UpdateUserPromotionsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_user_promotions_by_id_update_columns
+      fieldMapping:
+        appliedOn:
+          column:
+            name: applied_on
+        id:
+          column:
+            name: id
+        promotionId:
+          column:
+            name: promotion_id
+        userId:
+          column:
+            name: user_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateUserPromotionsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - appliedOn
+          - id
+          - promotionId
+          - userId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateUserPromotionsByIdResponse
+  description: Responses from the 'update_user_promotions_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[UserPromotions!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateUserPromotionsByIdResponse
+    inputTypeName: UpdateUserPromotionsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_user_promotions_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateUserPromotionsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateUserPromotionsById
+  outputType: UpdateUserPromotionsByIdResponse!
+  arguments:
+    - name: keyId
+      type: Uuid!
+    - name: postCheck
+      type: UserPromotionsBoolExp
+      description: Update permission post-condition predicate over the
+        'user_promotions' collection
+    - name: preCheck
+      type: UserPromotionsBoolExp
+      description: Update permission pre-condition predicate over the
+        'user_promotions' collection
+    - name: updateColumns
+      type: UpdateUserPromotionsByIdUpdateColumns!
+  source:
+    dataConnectorName: telco_demo_connector
+    dataConnectorCommand:
+      procedure: update_user_promotions_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateUserPromotionsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'user_promotions' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateUserPromotionsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

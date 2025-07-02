@@ -1,0 +1,233 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UserPlans
+  fields:
+    - name: endDate
+      type: Date
+    - name: id
+      type: Uuid!
+    - name: isActive
+      type: Boolean_1
+    - name: planId
+      type: Uuid
+    - name: startDate
+      type: Date
+    - name: userId
+      type: Uuid
+  graphql:
+    typeName: UserPlans
+    inputTypeName: UserPlansInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: user_plans
+      fieldMapping:
+        endDate:
+          column:
+            name: end_date
+        id:
+          column:
+            name: id
+        isActive:
+          column:
+            name: is_active
+        planId:
+          column:
+            name: plan_id
+        startDate:
+          column:
+            name: start_date
+        userId:
+          column:
+            name: user_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UserPlans
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - endDate
+          - id
+          - isActive
+          - planId
+          - startDate
+          - userId
+    - role: family-admin
+      output:
+        allowedFields:
+          - endDate
+          - id
+          - isActive
+          - planId
+          - startDate
+          - userId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: UserPlansBoolExp
+  operand:
+    object:
+      type: UserPlans
+      comparableFields:
+        - fieldName: endDate
+          booleanExpressionType: DateBoolExp
+        - fieldName: id
+          booleanExpressionType: UuidBoolExp
+        - fieldName: isActive
+          booleanExpressionType: BoolBoolExp
+        - fieldName: planId
+          booleanExpressionType: UuidBoolExp
+        - fieldName: startDate
+          booleanExpressionType: DateBoolExp
+        - fieldName: userId
+          booleanExpressionType: UuidBoolExp
+      comparableRelationships:
+        - relationshipName: plan
+        - relationshipName: user
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: UserPlansBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: UserPlansAggExp
+  operand:
+    object:
+      aggregatedType: UserPlans
+      aggregatableFields:
+        - fieldName: endDate
+          aggregateExpression: DateAggExp
+        - fieldName: id
+          aggregateExpression: UuidAggExp
+        - fieldName: isActive
+          aggregateExpression: BoolAggExp
+        - fieldName: planId
+          aggregateExpression: UuidAggExp
+        - fieldName: startDate
+          aggregateExpression: DateAggExp
+        - fieldName: userId
+          aggregateExpression: UuidAggExp
+  count:
+    enable: true
+  graphql:
+    selectTypeName: UserPlansAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: UserPlansOrderByExp
+  operand:
+    object:
+      orderedType: UserPlans
+      orderableFields:
+        - fieldName: endDate
+          orderByExpression: DateOrderByExp
+        - fieldName: id
+          orderByExpression: UuidOrderByExp
+        - fieldName: isActive
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: planId
+          orderByExpression: UuidOrderByExp
+        - fieldName: startDate
+          orderByExpression: DateOrderByExp
+        - fieldName: userId
+          orderByExpression: UuidOrderByExp
+      orderableRelationships:
+        - relationshipName: plan
+        - relationshipName: user
+  graphql:
+    expressionTypeName: UserPlansOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: UserPlans
+  objectType: UserPlans
+  source:
+    dataConnectorName: telco_demo_connector
+    collection: user_plans
+  filterExpressionType: UserPlansBoolExp
+  aggregateExpression: UserPlansAggExp
+  orderByExpression: UserPlansOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: userPlans
+      subscription:
+        rootField: userPlans
+    selectUniques:
+      - queryRootField: userPlansById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: userPlansById
+    filterInputTypeName: UserPlansFilterInput
+    aggregate:
+      queryRootField: userPlansAggregate
+      subscription:
+        rootField: userPlansAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: UserPlans
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+    - role: family-admin
+      select:
+        filter: null
+        allowSubscriptions: true
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: plan
+  sourceType: UserPlans
+  target:
+    model:
+      name: Plans
+      relationshipType: Object
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: planId
+      target:
+        modelField:
+          - fieldName: id
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: user
+  sourceType: UserPlans
+  target:
+    model:
+      name: Users
+      relationshipType: Object
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: userId
+      target:
+        modelField:
+          - fieldName: id
+

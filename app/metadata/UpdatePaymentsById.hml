@@ -1,0 +1,338 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPaymentsAmount
+  description: Update the 'amount' column in the 'payments' collection
+  fields:
+    - name: set
+      type: Bigdecimal
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPaymentsAmount
+    inputTypeName: UpdateColumnPaymentsAmountInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_payments_amount
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPaymentsAmount
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPaymentsId
+  description: Update the 'id' column in the 'payments' collection
+  fields:
+    - name: set
+      type: Uuid!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPaymentsId
+    inputTypeName: UpdateColumnPaymentsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_payments_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPaymentsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPaymentsMethod
+  description: Update the 'method' column in the 'payments' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPaymentsMethod
+    inputTypeName: UpdateColumnPaymentsMethodInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_payments_method
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPaymentsMethod
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPaymentsPaymentDate
+  description: Update the 'payment_date' column in the 'payments' collection
+  fields:
+    - name: set
+      type: Date
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPaymentsPaymentDate
+    inputTypeName: UpdateColumnPaymentsPaymentDateInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_payments_payment_date
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPaymentsPaymentDate
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPaymentsStatus
+  description: Update the 'status' column in the 'payments' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPaymentsStatus
+    inputTypeName: UpdateColumnPaymentsStatusInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_payments_status
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPaymentsStatus
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPaymentsUserId
+  description: Update the 'user_id' column in the 'payments' collection
+  fields:
+    - name: set
+      type: Uuid
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPaymentsUserId
+    inputTypeName: UpdateColumnPaymentsUserIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_column_payments_user_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPaymentsUserId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdatePaymentsByIdUpdateColumns
+  description: Update the columns of the 'payments' collection
+  fields:
+    - name: amount
+      type: UpdateColumnPaymentsAmount
+      description: Update the 'amount' column in the 'payments' collection.
+    - name: id
+      type: UpdateColumnPaymentsId
+      description: Update the 'id' column in the 'payments' collection.
+    - name: method
+      type: UpdateColumnPaymentsMethod
+      description: Update the 'method' column in the 'payments' collection.
+    - name: paymentDate
+      type: UpdateColumnPaymentsPaymentDate
+      description: Update the 'payment_date' column in the 'payments' collection.
+    - name: status
+      type: UpdateColumnPaymentsStatus
+      description: Update the 'status' column in the 'payments' collection.
+    - name: userId
+      type: UpdateColumnPaymentsUserId
+      description: Update the 'user_id' column in the 'payments' collection.
+  graphql:
+    typeName: UpdatePaymentsByIdUpdateColumns
+    inputTypeName: UpdatePaymentsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_payments_by_id_update_columns
+      fieldMapping:
+        amount:
+          column:
+            name: amount
+        id:
+          column:
+            name: id
+        method:
+          column:
+            name: method
+        paymentDate:
+          column:
+            name: payment_date
+        status:
+          column:
+            name: status
+        userId:
+          column:
+            name: user_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdatePaymentsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amount
+          - id
+          - method
+          - paymentDate
+          - status
+          - userId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdatePaymentsByIdResponse
+  description: Responses from the 'update_payments_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[Payments!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdatePaymentsByIdResponse
+    inputTypeName: UpdatePaymentsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: update_payments_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdatePaymentsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdatePaymentsById
+  outputType: UpdatePaymentsByIdResponse!
+  arguments:
+    - name: keyId
+      type: Uuid!
+    - name: postCheck
+      type: PaymentsBoolExp
+      description: Update permission post-condition predicate over the 'payments' collection
+    - name: preCheck
+      type: PaymentsBoolExp
+      description: Update permission pre-condition predicate over the 'payments' collection
+    - name: updateColumns
+      type: UpdatePaymentsByIdUpdateColumns!
+  source:
+    dataConnectorName: telco_demo_connector
+    dataConnectorCommand:
+      procedure: update_payments_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updatePaymentsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'payments' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdatePaymentsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

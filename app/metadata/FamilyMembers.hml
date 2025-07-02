@@ -1,0 +1,205 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: FamilyMembers
+  fields:
+    - name: familyId
+      type: Uuid!
+    - name: relationship
+      type: String_1
+    - name: userId
+      type: Uuid!
+  graphql:
+    typeName: FamilyMembers
+    inputTypeName: FamilyMembersInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: family_members
+      fieldMapping:
+        familyId:
+          column:
+            name: family_id
+        relationship:
+          column:
+            name: relationship
+        userId:
+          column:
+            name: user_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: FamilyMembers
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - familyId
+          - relationship
+          - userId
+    - role: family-admin
+      output:
+        allowedFields:
+          - familyId
+          - relationship
+          - userId
+    - role: family-member
+      output:
+        allowedFields:
+          - familyId
+          - relationship
+          - userId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: FamilyMembersBoolExp
+  operand:
+    object:
+      type: FamilyMembers
+      comparableFields:
+        - fieldName: familyId
+          booleanExpressionType: UuidBoolExp
+        - fieldName: relationship
+          booleanExpressionType: TextBoolExp
+        - fieldName: userId
+          booleanExpressionType: UuidBoolExp
+      comparableRelationships:
+        - relationshipName: family
+        - relationshipName: user
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: FamilyMembersBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: FamilyMembersAggExp
+  operand:
+    object:
+      aggregatedType: FamilyMembers
+      aggregatableFields:
+        - fieldName: familyId
+          aggregateExpression: UuidAggExp
+        - fieldName: relationship
+          aggregateExpression: TextAggExp
+        - fieldName: userId
+          aggregateExpression: UuidAggExp
+  count:
+    enable: true
+  graphql:
+    selectTypeName: FamilyMembersAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: FamilyMembersOrderByExp
+  operand:
+    object:
+      orderedType: FamilyMembers
+      orderableFields:
+        - fieldName: familyId
+          orderByExpression: UuidOrderByExp
+        - fieldName: relationship
+          orderByExpression: String1OrderByExp
+        - fieldName: userId
+          orderByExpression: UuidOrderByExp
+      orderableRelationships:
+        - relationshipName: family
+        - relationshipName: user
+  graphql:
+    expressionTypeName: FamilyMembersOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: FamilyMembers
+  objectType: FamilyMembers
+  source:
+    dataConnectorName: telco_demo_connector
+    collection: family_members
+  filterExpressionType: FamilyMembersBoolExp
+  aggregateExpression: FamilyMembersAggExp
+  orderByExpression: FamilyMembersOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: familyMembers
+      subscription:
+        rootField: familyMembers
+    selectUniques:
+      - queryRootField: familyMembersByFamilyMembersPkey
+        uniqueIdentifier:
+          - familyId
+          - userId
+        subscription:
+          rootField: familyMembersByFamilyMembersPkey
+    filterInputTypeName: FamilyMembersFilterInput
+    aggregate:
+      queryRootField: familyMembersAggregate
+      subscription:
+        rootField: familyMembersAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: FamilyMembers
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+    - role: family-admin
+      select:
+        filter: null
+        allowSubscriptions: true
+    - role: family-member
+      select:
+        filter: null
+        allowSubscriptions: true
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: family
+  sourceType: FamilyMembers
+  target:
+    model:
+      name: Families
+      relationshipType: Object
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: familyId
+      target:
+        modelField:
+          - fieldName: id
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: user
+  sourceType: FamilyMembers
+  target:
+    model:
+      name: Users
+      relationshipType: Object
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: userId
+      target:
+        modelField:
+          - fieldName: id
+

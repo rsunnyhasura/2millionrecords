@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteDevicesByImeiResponse
+  description: Responses from the 'delete_devices_by_imei' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[Devices!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteDevicesByImeiResponse
+    inputTypeName: DeleteDevicesByImeiResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: delete_devices_by_imei_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteDevicesByImeiResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteDevicesByImei
+  outputType: DeleteDevicesByImeiResponse!
+  arguments:
+    - name: keyImei
+      type: String_1!
+    - name: preCheck
+      type: DevicesBoolExp
+      description: Delete permission predicate over the 'devices' collection
+  source:
+    dataConnectorName: telco_demo_connector
+    dataConnectorCommand:
+      procedure: delete_devices_by_imei
+    argumentMapping:
+      keyImei: key_imei
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteDevicesByImei
+    rootFieldKind: Mutation
+  description: Delete any row on the 'devices' collection using the 'imei' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteDevicesByImei
+  permissions:
+    - role: admin
+      allowExecution: true
+

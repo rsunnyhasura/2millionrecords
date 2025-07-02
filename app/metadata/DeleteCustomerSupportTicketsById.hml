@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteCustomerSupportTicketsByIdResponse
+  description: Responses from the 'delete_customer_support_tickets_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[CustomerSupportTickets!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteCustomerSupportTicketsByIdResponse
+    inputTypeName: DeleteCustomerSupportTicketsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: delete_customer_support_tickets_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteCustomerSupportTicketsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteCustomerSupportTicketsById
+  outputType: DeleteCustomerSupportTicketsByIdResponse!
+  arguments:
+    - name: keyId
+      type: Uuid!
+    - name: preCheck
+      type: CustomerSupportTicketsBoolExp
+      description: Delete permission predicate over the 'customer_support_tickets'
+        collection
+  source:
+    dataConnectorName: telco_demo_connector
+    dataConnectorCommand:
+      procedure: delete_customer_support_tickets_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteCustomerSupportTicketsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'customer_support_tickets' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteCustomerSupportTicketsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,19 @@
+kind: Subgraph
+version: v2
+definition:
+  name: app
+  generator:
+    rootPath: .
+    namingConvention: graphql
+  includePaths:
+    - metadata
+  envMapping:
+    APP_TELCO_DEMO_CONNECTOR_AUTHORIZATION_HEADER:
+      fromEnv: APP_TELCO_DEMO_CONNECTOR_AUTHORIZATION_HEADER
+    APP_TELCO_DEMO_CONNECTOR_READ_URL:
+      fromEnv: APP_TELCO_DEMO_CONNECTOR_READ_URL
+    APP_TELCO_DEMO_CONNECTOR_WRITE_URL:
+      fromEnv: APP_TELCO_DEMO_CONNECTOR_WRITE_URL
+  connectors:
+    - path: connector/telco_demo_connector/connector.yaml
+      connectorLinkName: telco_demo_connector

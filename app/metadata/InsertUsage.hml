@@ -1,0 +1,138 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertUsageObject
+  fields:
+    - name: callMinutesUsed
+      type: Int32
+    - name: dataUsedGb
+      type: Bigdecimal
+    - name: id
+      type: Uuid!
+    - name: smsUsed
+      type: Int32
+    - name: usagePeriodEnd
+      type: Date
+    - name: usagePeriodStart
+      type: Date
+    - name: userId
+      type: Uuid
+  graphql:
+    typeName: InsertUsageObject
+    inputTypeName: InsertUsageObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: insert_usage_object
+      fieldMapping:
+        callMinutesUsed:
+          column:
+            name: call_minutes_used
+        dataUsedGb:
+          column:
+            name: data_used_gb
+        id:
+          column:
+            name: id
+        smsUsed:
+          column:
+            name: sms_used
+        usagePeriodEnd:
+          column:
+            name: usage_period_end
+        usagePeriodStart:
+          column:
+            name: usage_period_start
+        userId:
+          column:
+            name: user_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertUsageObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - callMinutesUsed
+          - dataUsedGb
+          - id
+          - smsUsed
+          - usagePeriodEnd
+          - usagePeriodStart
+          - userId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertUsageResponse
+  description: Responses from the 'insert_usage' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[Usage!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertUsageResponse
+    inputTypeName: InsertUsageResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: insert_usage_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertUsageResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertUsage
+  outputType: InsertUsageResponse!
+  arguments:
+    - name: objects
+      type: "[InsertUsageObject!]!"
+    - name: postCheck
+      type: UsageBoolExp
+      description: Insert permission predicate over the 'usage' collection
+  source:
+    dataConnectorName: telco_demo_connector
+    dataConnectorCommand:
+      procedure: insert_usage
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertUsage
+    rootFieldKind: Mutation
+  description: Insert into the usage table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertUsage
+  permissions:
+    - role: admin
+      allowExecution: true
+

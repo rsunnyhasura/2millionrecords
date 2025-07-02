@@ -1,0 +1,144 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPlansObject
+  fields:
+    - name: callMinutes
+      type: Int32
+    - name: dataLimitGb
+      type: Bigdecimal
+    - name: description
+      type: String_1
+    - name: id
+      type: Uuid!
+    - name: name
+      type: String_1
+    - name: price
+      type: Bigdecimal
+    - name: smsLimit
+      type: Int32
+    - name: type
+      type: String_1
+  graphql:
+    typeName: InsertPlansObject
+    inputTypeName: InsertPlansObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: insert_plans_object
+      fieldMapping:
+        callMinutes:
+          column:
+            name: call_minutes
+        dataLimitGb:
+          column:
+            name: data_limit_gb
+        description:
+          column:
+            name: description
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+        price:
+          column:
+            name: price
+        smsLimit:
+          column:
+            name: sms_limit
+        type:
+          column:
+            name: type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPlansObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - callMinutes
+          - dataLimitGb
+          - description
+          - id
+          - name
+          - price
+          - smsLimit
+          - type
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPlansResponse
+  description: Responses from the 'insert_plans' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[Plans!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertPlansResponse
+    inputTypeName: InsertPlansResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: insert_plans_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPlansResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertPlans
+  outputType: InsertPlansResponse!
+  arguments:
+    - name: objects
+      type: "[InsertPlansObject!]!"
+    - name: postCheck
+      type: PlansBoolExp
+      description: Insert permission predicate over the 'plans' collection
+  source:
+    dataConnectorName: telco_demo_connector
+    dataConnectorCommand:
+      procedure: insert_plans
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertPlans
+    rootFieldKind: Mutation
+  description: Insert into the plans table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertPlans
+  permissions:
+    - role: admin
+      allowExecution: true
+

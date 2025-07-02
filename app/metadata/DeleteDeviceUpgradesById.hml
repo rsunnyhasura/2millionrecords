@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteDeviceUpgradesByIdResponse
+  description: Responses from the 'delete_device_upgrades_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[DeviceUpgrades!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteDeviceUpgradesByIdResponse
+    inputTypeName: DeleteDeviceUpgradesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: delete_device_upgrades_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteDeviceUpgradesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteDeviceUpgradesById
+  outputType: DeleteDeviceUpgradesByIdResponse!
+  arguments:
+    - name: keyId
+      type: Uuid!
+    - name: preCheck
+      type: DeviceUpgradesBoolExp
+      description: Delete permission predicate over the 'device_upgrades' collection
+  source:
+    dataConnectorName: telco_demo_connector
+    dataConnectorCommand:
+      procedure: delete_device_upgrades_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteDeviceUpgradesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'device_upgrades' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteDeviceUpgradesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

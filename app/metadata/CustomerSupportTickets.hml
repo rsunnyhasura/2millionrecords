@@ -1,0 +1,240 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: CustomerSupportTickets
+  fields:
+    - name: createdAt
+      type: Timestamp
+    - name: description
+      type: String_1
+    - name: id
+      type: Uuid!
+    - name: issueType
+      type: String_1
+    - name: resolvedAt
+      type: Timestamp
+    - name: status
+      type: String_1
+    - name: userId
+      type: Uuid
+  graphql:
+    typeName: CustomerSupportTickets
+    inputTypeName: CustomerSupportTicketsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: customer_support_tickets
+      fieldMapping:
+        createdAt:
+          column:
+            name: created_at
+        description:
+          column:
+            name: description
+        id:
+          column:
+            name: id
+        issueType:
+          column:
+            name: issue_type
+        resolvedAt:
+          column:
+            name: resolved_at
+        status:
+          column:
+            name: status
+        userId:
+          column:
+            name: user_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: CustomerSupportTickets
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - createdAt
+          - description
+          - id
+          - issueType
+          - resolvedAt
+          - status
+          - userId
+    - role: family-admin
+      output:
+        allowedFields:
+          - createdAt
+          - description
+          - id
+          - issueType
+          - resolvedAt
+          - status
+          - userId
+    - role: family-member
+      output:
+        allowedFields:
+          - createdAt
+          - description
+          - id
+          - issueType
+          - resolvedAt
+          - status
+          - userId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: CustomerSupportTicketsBoolExp
+  operand:
+    object:
+      type: CustomerSupportTickets
+      comparableFields:
+        - fieldName: createdAt
+          booleanExpressionType: TimestampBoolExp
+        - fieldName: description
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: UuidBoolExp
+        - fieldName: issueType
+          booleanExpressionType: TextBoolExp
+        - fieldName: resolvedAt
+          booleanExpressionType: TimestampBoolExp
+        - fieldName: status
+          booleanExpressionType: TextBoolExp
+        - fieldName: userId
+          booleanExpressionType: UuidBoolExp
+      comparableRelationships:
+        - relationshipName: user
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: CustomerSupportTicketsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: CustomerSupportTicketsAggExp
+  operand:
+    object:
+      aggregatedType: CustomerSupportTickets
+      aggregatableFields:
+        - fieldName: createdAt
+          aggregateExpression: TimestampAggExp
+        - fieldName: description
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: UuidAggExp
+        - fieldName: issueType
+          aggregateExpression: TextAggExp
+        - fieldName: resolvedAt
+          aggregateExpression: TimestampAggExp
+        - fieldName: status
+          aggregateExpression: TextAggExp
+        - fieldName: userId
+          aggregateExpression: UuidAggExp
+  count:
+    enable: true
+  graphql:
+    selectTypeName: CustomerSupportTicketsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: CustomerSupportTicketsOrderByExp
+  operand:
+    object:
+      orderedType: CustomerSupportTickets
+      orderableFields:
+        - fieldName: createdAt
+          orderByExpression: TimestampOrderByExp
+        - fieldName: description
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: UuidOrderByExp
+        - fieldName: issueType
+          orderByExpression: String1OrderByExp
+        - fieldName: resolvedAt
+          orderByExpression: TimestampOrderByExp
+        - fieldName: status
+          orderByExpression: String1OrderByExp
+        - fieldName: userId
+          orderByExpression: UuidOrderByExp
+      orderableRelationships:
+        - relationshipName: user
+  graphql:
+    expressionTypeName: CustomerSupportTicketsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: CustomerSupportTickets
+  objectType: CustomerSupportTickets
+  source:
+    dataConnectorName: telco_demo_connector
+    collection: customer_support_tickets
+  filterExpressionType: CustomerSupportTicketsBoolExp
+  aggregateExpression: CustomerSupportTicketsAggExp
+  orderByExpression: CustomerSupportTicketsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: customerSupportTickets
+      subscription:
+        rootField: customerSupportTickets
+    selectUniques:
+      - queryRootField: customerSupportTicketsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: customerSupportTicketsById
+    filterInputTypeName: CustomerSupportTicketsFilterInput
+    aggregate:
+      queryRootField: customerSupportTicketsAggregate
+      subscription:
+        rootField: customerSupportTicketsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: CustomerSupportTickets
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+    - role: family-admin
+      select:
+        filter: null
+        allowSubscriptions: true
+    - role: family-member
+      select:
+        filter: null
+        allowSubscriptions: true
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: user
+  sourceType: CustomerSupportTickets
+  target:
+    model:
+      name: Users
+      relationshipType: Object
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: userId
+      target:
+        modelField:
+          - fieldName: id
+

@@ -1,0 +1,16 @@
+kind: AuthConfig
+version: v3
+definition:
+  mode:
+    jwt:
+      claimsConfig:
+        namespace:
+          claimsFormat: Json       
+          location: "/https:~1~1hasura.io~1jwt~1claims"         
+      issuer: "https://dev-u0iz30pm6cxafrbx.us.auth0.com/"
+      key:
+        jwkFromUrl: "https://dev-u0iz30pm6cxafrbx.us.auth0.com/.well-known/jwks.json"
+      # audience: ["https://witty-scorpion-4984-9239a2d42d.ddn.hasura.app/graphql"]
+      tokenLocation:
+        type: Header
+        name: Auth-Token

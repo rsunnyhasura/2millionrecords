@@ -1,0 +1,226 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: Usage
+  fields:
+    - name: callMinutesUsed
+      type: Int32
+    - name: dataUsedGb
+      type: Bigdecimal
+    - name: id
+      type: Uuid!
+    - name: smsUsed
+      type: Int32
+    - name: usagePeriodEnd
+      type: Date
+    - name: usagePeriodStart
+      type: Date
+    - name: userId
+      type: Uuid
+  graphql:
+    typeName: Usage
+    inputTypeName: UsageInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: telco_demo_connector
+      dataConnectorObjectType: usage
+      fieldMapping:
+        callMinutesUsed:
+          column:
+            name: call_minutes_used
+        dataUsedGb:
+          column:
+            name: data_used_gb
+        id:
+          column:
+            name: id
+        smsUsed:
+          column:
+            name: sms_used
+        usagePeriodEnd:
+          column:
+            name: usage_period_end
+        usagePeriodStart:
+          column:
+            name: usage_period_start
+        userId:
+          column:
+            name: user_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: Usage
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - callMinutesUsed
+          - dataUsedGb
+          - id
+          - smsUsed
+          - usagePeriodEnd
+          - usagePeriodStart
+          - userId
+    - role: family-admin
+      output:
+        allowedFields:
+          - callMinutesUsed
+          - dataUsedGb
+          - id
+          - smsUsed
+          - usagePeriodEnd
+          - usagePeriodStart
+          - userId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: UsageBoolExp
+  operand:
+    object:
+      type: Usage
+      comparableFields:
+        - fieldName: callMinutesUsed
+          booleanExpressionType: Int4BoolExp
+        - fieldName: dataUsedGb
+          booleanExpressionType: NumericBoolExp
+        - fieldName: id
+          booleanExpressionType: UuidBoolExp
+        - fieldName: smsUsed
+          booleanExpressionType: Int4BoolExp
+        - fieldName: usagePeriodEnd
+          booleanExpressionType: DateBoolExp
+        - fieldName: usagePeriodStart
+          booleanExpressionType: DateBoolExp
+        - fieldName: userId
+          booleanExpressionType: UuidBoolExp
+      comparableRelationships:
+        - relationshipName: user
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: UsageBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: UsageAggExp
+  operand:
+    object:
+      aggregatedType: Usage
+      aggregatableFields:
+        - fieldName: callMinutesUsed
+          aggregateExpression: Int4AggExp
+        - fieldName: dataUsedGb
+          aggregateExpression: NumericAggExp
+        - fieldName: id
+          aggregateExpression: UuidAggExp
+        - fieldName: smsUsed
+          aggregateExpression: Int4AggExp
+        - fieldName: usagePeriodEnd
+          aggregateExpression: DateAggExp
+        - fieldName: usagePeriodStart
+          aggregateExpression: DateAggExp
+        - fieldName: userId
+          aggregateExpression: UuidAggExp
+  count:
+    enable: true
+  graphql:
+    selectTypeName: UsageAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: UsageOrderByExp
+  operand:
+    object:
+      orderedType: Usage
+      orderableFields:
+        - fieldName: callMinutesUsed
+          orderByExpression: Int32OrderByExp
+        - fieldName: dataUsedGb
+          orderByExpression: BigdecimalOrderByExp
+        - fieldName: id
+          orderByExpression: UuidOrderByExp
+        - fieldName: smsUsed
+          orderByExpression: Int32OrderByExp
+        - fieldName: usagePeriodEnd
+          orderByExpression: DateOrderByExp
+        - fieldName: usagePeriodStart
+          orderByExpression: DateOrderByExp
+        - fieldName: userId
+          orderByExpression: UuidOrderByExp
+      orderableRelationships:
+        - relationshipName: user
+  graphql:
+    expressionTypeName: UsageOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: Usage
+  objectType: Usage
+  source:
+    dataConnectorName: telco_demo_connector
+    collection: usage
+  filterExpressionType: UsageBoolExp
+  aggregateExpression: UsageAggExp
+  orderByExpression: UsageOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: usage
+      subscription:
+        rootField: usage
+    selectUniques:
+      - queryRootField: usageById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: usageById
+    filterInputTypeName: UsageFilterInput
+    aggregate:
+      queryRootField: usageAggregate
+      subscription:
+        rootField: usageAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: Usage
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+    - role: family-admin
+      select:
+        filter: null
+        allowSubscriptions: true
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: user
+  sourceType: Usage
+  target:
+    model:
+      name: Users
+      relationshipType: Object
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: userId
+      target:
+        modelField:
+          - fieldName: id
+
