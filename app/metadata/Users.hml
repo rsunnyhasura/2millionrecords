@@ -247,13 +247,19 @@ definition:
         allowSubscriptions: true
     - role: family-admin
       select:
-        filter: null
-        allowSubscriptions: true
+        filter:
+          relationship:
+            name: familyMembers
+            predicate:
+              fieldComparison:
+                field: familyId
+                operator: _eq
+                value:
+                  sessionVariable: x-hasura-family-id
     - role: family-member
       select:
         filter: null
         allowSubscriptions: true
-
 
 
 ---

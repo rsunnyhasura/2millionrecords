@@ -59,7 +59,14 @@ definition:
           - id
           - name
           - primaryUserId
-
+    - role: user
+      output:
+        allowedFields:
+          - createdAt
+          - id
+          - name
+          - primaryUserId
+      
 ---
 kind: BooleanExpressionType
 version: v1
@@ -185,7 +192,8 @@ definition:
             field: primaryUserId
             operator: _eq
             value:
-              sessionVariable: x-hasura-user-id
+              sessionVariable:  x-hasura-user-id
+
 
 ---              
 kind: Relationship

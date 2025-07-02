@@ -1,1 +1,1 @@
-{"version":"v3","definition":{"mode":{"noAuth":{"role":"admin","sessionVariables":{}}}}}
+{"version":"v3","definition":{"mode":{"jwt":{"audience":null,"issuer":"https://dev-oqe0yjx7y55dn5so.us.auth0.com/","allowedSkew":null,"claimsConfig":{"namespace":{"claimsFormat":"Json","location":"/https:~1~1hasura.io~1jwt~1claims"}},"tokenLocation":{"type":"Header","name":"Auth-Token"},"key":{"jwkFromUrl":"https://dev-oqe0yjx7y55dn5so.us.auth0.com/.well-known/jwks.json"}}}}}
